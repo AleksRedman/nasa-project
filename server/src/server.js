@@ -1,14 +1,13 @@
 const http = require('http');
 const app = require('./app');
-const { loadPlanetsData } = require('./models/planets.module')
+const { loadPlanetsData } = require('./models/planets.model')
+const { mongooseConnect } = require('./services/mongo')
 
 const PORT = process.env.PORT || 8000;
-
 const server = http.createServer(app);
 
-
-
 async function startServer() {
+  await mongooseConnect()
   await loadPlanetsData();
 
   server.listen(PORT, () => {

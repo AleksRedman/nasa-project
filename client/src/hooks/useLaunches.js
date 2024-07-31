@@ -12,6 +12,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
 
   const getLaunches = useCallback(async () => {
     const fetchedLaunches = await httpGetLaunches();
+    console.log('getLaunches', fetchedLaunches)
     saveLaunches(fetchedLaunches);
   }, []);
 
@@ -31,11 +32,13 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
       launchDate,
       mission,
       rocket,
-      target,
+      destination: target,
     });
 
+    console.log('submitLaunch_resp', response)
+
     // TODO: Set success based on response.
-    const success = false;
+    const success = response.ok;
     if (success) {
       getLaunches();
       setTimeout(() => {
@@ -51,7 +54,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
     const response = await httpAbortLaunch(id);
 
     // TODO: Set success based on response.
-    const success = false;
+    const success = response.ok;
     if (success) {
       getLaunches();
       onAbortSound();
